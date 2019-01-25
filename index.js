@@ -35,7 +35,7 @@ client.on('message', message => {
                },
                {
                  "name": "__Commands:__",
-                 "value": "!help\n!notify [@projectrole] [@yourusername]\n!creator\n!eval [node.js code]"
+                 "value": "!help\n!notify [@projectrole] [@yourusername]\n!creator\n!eval [node.js code]\n!br [bugreport]\n!fr [featurerequest]"
                }
                ]
            }
@@ -90,7 +90,74 @@ client.on('message', message => {
 		var x = Math.floor((Math.random() * 8) + 1);
 		message.reply(responses[x]);
 	}
-
+	
+	if (message.content.startsWith("!rf")) {
+		var request = message.content.slice(4);
+		
+		if (request.length < 10) {
+			
+			return message.channel.send("Your request must be atleast 10 characters long.");
+			
+		}		
+		
+		message.channel.send("Feature Request Submitted! Check it out at `#feature-request`");
+	
+		client.channels.get("538336369274257409").send({
+            "embed": {
+             "title": "Feature Request!",
+             "description": "   ",
+             "color": 7469282,
+            
+             "fields": [
+               {
+                 "name": "Author:",
+                 "value": message.author.username
+               },
+               {
+                 "name": "Request:",
+                 "value": request
+               }
+               ]
+           }
+         });
+		 
+	
+		
+	}
+	
+	if (message.content.startsWith("!br")) {
+		var arg = message.content.slice(4);
+		
+		if (arg === "format") {
+			message.channel.send("```Project Name:\nWhat is the Bug?:\nSteps to Reproduce?:\nImportant: Scale from 1-10.```");
+		}
+		
+		if (arg.length < 10) {
+			return message.channel.send("Your bug report must be atleast 10 charecters long!");
+		}
+		
+		client.channels.get("538336369274257409").send({
+            "embed": {
+             "title": "Bug Report!",
+             "description": "   ",
+             "color": 7469282,
+            
+             "fields": [
+               {
+                 "name": "Author:",
+                 "value": message.author.username
+               },
+               {
+                 "name": "Bug:",
+                 "value": arg             
+				}
+               ]
+           }
+         });
+		 
+		message.channel.send("Bug report has been delivered.");
+		
+	}
 
 });
 
